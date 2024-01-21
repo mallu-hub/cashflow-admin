@@ -1,5 +1,5 @@
 import { Box, Button, Card, CardHeader, Divider, Grid } from '@mui/material'
-import { DataGrid, GridColumns } from '@mui/x-data-grid'
+import { DataGrid } from '@mui/x-data-grid'
 import React, { useState } from 'react'
 import { useGetRoles } from 'src/api/services/roles/get'
 import useGetRolesCols from './hooks/columns'
@@ -102,7 +102,7 @@ const Roles = () => {
           <Divider />
           <Box sx={{ height: 400 }}>
             <DataGrid
-              columns={columns as GridColumns<RoleFormType>}
+              columns={columns as any}
               rows={rolesList || []}
               rowCount={roles?.data?.total || 0}
               paginationMode='server'
