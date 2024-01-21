@@ -1,7 +1,6 @@
 import { Box, Button, Card, CardHeader, Divider, Grid } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
 import React, { useState } from 'react'
-import { useRouter } from 'next/router'
 import { useGetRoles } from 'src/api/services/roles/get'
 import useGetRolesCols from './hooks/columns'
 import DeleteConfirmModal from 'src/components/DeleteConfirmModal'
@@ -30,13 +29,12 @@ const Roles = () => {
     handleEdit
   })
 
-  const [params, setParams] = useState({
+  const [params] = useState({
     page: 0,
     pageSize: 15
   })
 
   const { data: roles } = useGetRoles(params)
-  console.log(roles, 'rolesCheck')
   const rolesList = roles?.data || []
 
   return (
@@ -55,14 +53,11 @@ const Roles = () => {
           <Divider />
           <Box sx={{ height: 400 }}>
             <DataGrid
-              disableRowSelectionOnClick
-              columns={columns}
+              columns={columns as any}
               rows={rolesList?.data || []}
               rowCount={rolesList?.total || 0}
               paginationMode='server'
-              paginationModel={params}
-              onPaginationModelChange={setParams}
-              initialState={{ pagination: { paginationModel: { page: 0, pageSize: 15 } } }}
+              initialState={{ pagination: { paginationModel: { page: 0, pageSize: 15 } } } as any}
             />
           </Box>
         </Card>
