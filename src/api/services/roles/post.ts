@@ -1,11 +1,12 @@
 import { useMutation } from '@tanstack/react-query'
 import { ROLES_ENDPOINT } from 'src/api/routes/routes'
 import { axiosInstance } from 'src/axios/axiosInstance'
+import { RoleFormType } from 'src/types/roles'
 
-export const useRemoveRole = () => {
+export const useAddRoles = () => {
   return useMutation({
-    mutationFn: ({ id }: { id: string }) => {
-      return axiosInstance.delete(`/${ROLES_ENDPOINT}/${id}`)
+    mutationFn: (values: RoleFormType) => {
+      return axiosInstance.post(ROLES_ENDPOINT, values)
     }
   })
 }

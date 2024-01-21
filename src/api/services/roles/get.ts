@@ -1,22 +1,23 @@
-import { useQuery } from "@tanstack/react-query";
-import { axiosInstance } from "src/axios/axiosInstance";
+import { useQuery } from '@tanstack/react-query'
+import { ROLES_ENDPOINT } from 'src/api/routes/routes';
+import { axiosInstance } from 'src/axios/axiosInstance'
 
 async function getRoles(params: { page: number; pageSize: number }) {
-    const filterParams = {
-      ...params,
-      page: params?.page + 1
-    }
-  
-    const response = await axiosInstance.get(`roles`, {
-      params: filterParams
-    })
-  
-    return response
+  const filterParams = {
+    ...params,
+    page: params?.page + 1
   }
-  
-  export const useGetRoles = (params: { page: number; pageSize: number }) => {
-    return useQuery({
-      queryKey: ['roles', params],
-      queryFn: () => getRoles(params)
-    })
-  }
+
+  const response =  axiosInstance.get(ROLES_ENDPOINT, {
+    params: filterParams
+  })
+
+  return response
+}
+
+export const useGetRoles = (params: { page: number; pageSize: number }) => {
+  return useQuery({
+    queryKey: [ROLES_ENDPOINT, params],
+    queryFn: () => getRoles(params)
+  })
+}

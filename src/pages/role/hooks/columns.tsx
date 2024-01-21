@@ -15,11 +15,11 @@ const useGetRolesCols = ({
       field: 'name',
       minWidth: 100,
       headerName: 'Role Name',
-      renderCell: ({ row }: { row: { title: string } }) => {
+      renderCell: ({ row }: { row: { name: string } }) => {
         return (
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Typography noWrap sx={{ color: 'text.secondary', fontWeight: 700 }}>
-              {row.title}
+              {row.name}
             </Typography>
           </Box>
         )
@@ -30,10 +30,10 @@ const useGetRolesCols = ({
       field: 'permissions',
       minWidth: 50,
       headerName: 'Permissions',
-      renderCell: ({ row }: { row: { permission: string } }) => {
+      renderCell: ({ row }: { row: { permissions: string } }) => {
         return (
           <Typography noWrap sx={{ color: 'text.secondary', fontWeight: 700 }}>
-            {row.permission}
+            {row.permissions}
           </Typography>
         )
       }
