@@ -1,5 +1,5 @@
 import { Box, Button, Card, CardHeader, Divider, Grid } from '@mui/material'
-import { DataGrid, GridColumns } from '@mui/x-data-grid'
+import { DataGrid } from '@mui/x-data-grid'
 import React, { useState } from 'react'
 import { useGetRoles } from 'src/api/services/roles/get'
 import useGetRolesCols from './hooks/columns'
@@ -16,6 +16,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { ROLES_ENDPOINT } from 'src/api/routes/routes'
 import { yupResolver } from '@hookform/resolvers/yup'
 import useGetRolesSchema from './hooks/schema'
+import { useUpdateRoles } from 'src/api/services/roles/patch'
 
 const defaultValues = {
   name: ''
@@ -27,6 +28,7 @@ const Roles = () => {
   const [idToRemove, setIdToRemove] = useState<any>('')
   const toast = useCustomToast()
   const create = useAddRoles()
+  const update = useUpdateRoles()
   const remove = useRemoveRole()
 
   const queryClient = useQueryClient()
@@ -42,7 +44,11 @@ const Roles = () => {
     resolver: yupResolver(schema)
   })
 
+  const [isEdit, setIsEdit] = useState(false)
+  const [id, setId] = useState<number>(0)
+
   function handleDrawer() {
+    setIsEdit(false)
     setOpenAdd(!openAdd)
     reset(defaultValues)
     create.reset()
@@ -67,6 +73,8 @@ const Roles = () => {
   const rolesList = roles?.data?.data || []
 
   function handleEdit(id: number) {
+    setIsEdit(true)
+    setId(id)
     const selectedRole = rolesList?.find((role: { id: number }) => role.id === id)
     setOpenAdd(!openAdd)
     reset({
@@ -74,8 +82,11 @@ const Roles = () => {
     })
   }
 
+  const mutationFn:any = isEdit ? update : create
   const onSubmit = (values: RoleFormType) => {
-    create.mutate(values, {
+    const mutationValues = isEdit ? { id, data: values } : values
+
+    mutationFn.mutate(mutationValues, {
       onSuccess: handleSuccess
     })
   }
@@ -102,7 +113,7 @@ const Roles = () => {
           <Divider />
           <Box sx={{ height: 400 }}>
             <DataGrid
-              columns={columns as GridColumns<RoleFormType>}
+              columns={columns as any}
               rows={rolesList || []}
               rowCount={roles?.data?.total || 0}
               paginationMode='server'
