@@ -8,8 +8,9 @@ async function getRoles(params: { page: number; pageSize: number }) {
     page: params?.page + 1
   }
 
-  const response =  axiosInstance.get(ROLES_ENDPOINT, {
-    params: filterParams
+  const response =  axiosInstance.get(ROLES_ENDPOINT,{
+    params: filterParams,
+    withCredentials:false,
   })
 
   return response
