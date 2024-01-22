@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { ROLES_ENDPOINT } from 'src/api/routes/routes';
+import { ROLES_ENDPOINT } from 'src/api/routes/routes'
 import { axiosInstance } from 'src/axios/axiosInstance'
 
 async function getRoles(params: { page: number; pageSize: number }) {
@@ -8,9 +8,11 @@ async function getRoles(params: { page: number; pageSize: number }) {
     page: params?.page + 1
   }
 
-  const response =  axiosInstance.get(ROLES_ENDPOINT,{
+  const response = axiosInstance.get(ROLES_ENDPOINT, {
     params: filterParams,
-    withCredentials:false,
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    }
   })
 
   return response
